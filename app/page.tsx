@@ -539,9 +539,9 @@ export default function Home() {
 
           {/* Calendar Header */}
 
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-            <div className="flex gap-2">
+            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-start">
 
               <button
                 onClick={previousMonth}
@@ -566,12 +566,12 @@ export default function Home() {
 
             </div>
 
-            <h2 className="text-xl font-bold">
+            <h2 className="text-center text-xl font-bold">
               {monthName}{" "}
               {year + 543}
             </h2>
 
-            <div className="w-[150px]" />
+            <div className="hidden w-[150px] sm:block" />
 
           </div>
 
@@ -599,7 +599,7 @@ export default function Home() {
 
           {/* Week */}
 
-          <div className="grid grid-cols-7 overflow-hidden rounded-t-xl border-l border-t">
+          <div className="hidden grid-cols-7 overflow-hidden rounded-t-xl border-l border-t sm:grid">
 
             {[
               "อาทิตย์",
@@ -622,14 +622,14 @@ export default function Home() {
 
           {/* Days */}
 
-          <div className="grid grid-cols-7 overflow-hidden rounded-b-xl border-l">
+          <div className="grid grid-cols-1 overflow-hidden rounded-b-xl border-l sm:grid-cols-7">
 
             {Array.from({
               length: firstDay,
             }).map((_, i) => (
               <div
                 key={`empty-${i}`}
-                className="min-h-[150px] border-b border-r bg-gray-50"
+                className="hidden min-h-0 border-b border-r bg-gray-50 sm:block sm:min-h-[150px]"
               />
             ))}
 
@@ -659,7 +659,7 @@ export default function Home() {
               return (
                 <div
                   key={day}
-                  className={`min-h-[150px] border-b border-r p-2 ${
+                  className={`min-h-0 min-w-0 border-b border-r p-2 sm:min-h-[150px] ${
                     isToday
                       ? "bg-blue-50"
                       : "bg-white"
@@ -684,7 +684,7 @@ export default function Home() {
                           key={
                             content.id
                           }
-                          className={`rounded-md p-2 text-xs shadow-sm ${
+                          className={`min-w-0 overflow-hidden rounded-md p-2 text-xs shadow-sm ${
                             platformColors[
                               content.platform
                             ]
@@ -693,13 +693,13 @@ export default function Home() {
 
                           {/* เวลา */}
 
-                          <div className="font-semibold">
+                          <div className="break-words font-semibold">
                             {content.time}
                           </div>
 
                           {/* ชื่อ */}
 
-                          <div className="mt-1 font-semibold">
+                          <div className="mt-1 break-words font-semibold">
                             {content.title}
                           </div>
 
@@ -718,7 +718,7 @@ export default function Home() {
                                   .value as Status
                               )
                             }
-                            className="mt-2 w-full cursor-pointer rounded border border-white/30 bg-white/20 px-1 py-1 text-[10px] font-medium text-white outline-none"
+                            className="mt-2 min-w-0 w-full cursor-pointer truncate rounded border border-white/30 bg-white/20 px-1 py-1 text-[10px] font-medium text-white outline-none"
                           >
 
                             <option
@@ -753,7 +753,7 @@ export default function Home() {
 
                           {/* Buttons */}
 
-                          <div className="mt-2 flex gap-1">
+                          <div className="mt-2 flex flex-wrap items-stretch gap-1">
 
                             <button
                               onClick={() =>
@@ -761,7 +761,7 @@ export default function Home() {
                                   content
                                 )
                               }
-                              className="flex-1 rounded bg-white/90 px-2 py-1 text-[10px] font-semibold text-black hover:bg-white"
+                              className="min-w-0 flex-1 whitespace-normal break-words rounded bg-white/90 px-2 py-1 text-[10px] font-semibold text-black hover:bg-white"
                             >
                               ✏️ แก้ไข
                             </button>
@@ -772,7 +772,7 @@ export default function Home() {
                                   content.id
                                 )
                               }
-                              className="rounded bg-red-600 px-2 py-1 text-[10px] font-semibold text-white hover:bg-red-700"
+                              className="shrink-0 rounded bg-red-600 px-2 py-1 text-[10px] font-semibold text-white hover:bg-red-700"
                             >
                               🗑️
                             </button>
