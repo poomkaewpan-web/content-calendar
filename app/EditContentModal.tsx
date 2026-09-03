@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import type { ContentItem } from "./components/ContentModal";
+import type { ContentItem } from "../lib/content";
 
 type EditContentModalProps = {
   content: ContentItem;

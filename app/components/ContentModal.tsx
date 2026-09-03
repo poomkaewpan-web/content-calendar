@@ -1,24 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-
-export type ContentItem = {
-  id: number;
-  title: string;
-  date: string;
-  platform: "tiktok" | "instagram" | "facebook" | "all";
-  status:
-    | "editing"
-    | "published"
-    | "not_cut"
-    | "waiting"
-    | "cannot_publish";
-  time: string;
-  shootDate: string;
-  description: string;
-
-  responsible: "ภูมิ" | "จอม" | "";
-};
+import type { ContentItem } from "../../lib/content";
 
 type ContentModalProps = {
   onClose: () => void;

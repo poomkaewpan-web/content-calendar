@@ -2,33 +2,12 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-
-type Platform =
-  | "tiktok"
-  | "instagram"
-  | "facebook"
-  | "all";
-
-type Status =
-  | "editing"
-  | "published"
-  | "not_cut"
-  | "waiting"
-  | "cannot_publish";
-
-type Responsible = "ภูมิ" | "จอม" | "";
-
-type ContentItem = {
-  id: number;
-  title: string;
-  date: string;
-  platform: Platform;
-  status: Status;
-  responsible: Responsible;
-  time: string;
-  shootDate: string;
-  description: string;
-};
+import type {
+  ContentItem,
+  Platform,
+  Responsible,
+  Status,
+} from "../lib/content";
 
 const platformColors = {
   tiktok: "bg-black text-white",
@@ -208,7 +187,7 @@ export default function Home() {
           title,
           platform,
           status,
-          responsible,
+          responsible: responsible || null,
           shoot_date:
             shootDate || null,
           publish_date: publishDate,
@@ -246,7 +225,7 @@ export default function Home() {
           title,
           platform,
           status,
-          responsible,
+          responsible: responsible || null,
           shoot_date:
             shootDate || null,
           publish_date: publishDate,

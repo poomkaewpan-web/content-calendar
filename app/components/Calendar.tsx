@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ContentItem } from "./ContentModal";
+import type { ContentItem } from "../../lib/content";
 
 type CalendarProps = {
   contents: ContentItem[];
