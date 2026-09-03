@@ -37,7 +37,7 @@ export default function Calendar({
   onDelete,
 }: CalendarProps) {
   const [currentDate, setCurrentDate] =
-    useState(new Date(2026, 7, 1));
+  useState(() => new Date());
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();

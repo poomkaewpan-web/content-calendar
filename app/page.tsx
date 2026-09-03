@@ -59,7 +59,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   const [currentDate, setCurrentDate] = useState(
-    new Date(2026, 7, 1)
+    new Date()
   );
 
   const [showModal, setShowModal] = useState(false);
