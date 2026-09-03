@@ -25,9 +25,18 @@ const platformColors = {
 
 const statusNames = {
   editing: "กำลังตัดต่อ",
+  waiting: "รอออนแอร์",
   published: "ออนแอร์แล้ว",
   not_cut: "ยังไม่ได้ตัด",
   cannot_publish: "ไม่สามารถออนแอร์ได้",
+};
+
+const statusColors = {
+  editing: "bg-yellow-500",
+  waiting: "bg-orange-500",
+  published: "bg-green-500",
+  not_cut: "bg-red-500",
+  cannot_publish: "bg-gray-500",
 };
 
 export default function Calendar({
@@ -155,6 +164,12 @@ export default function Calendar({
                 {content.title}
               </div>
 
+              {content.responsible && (
+                <div className="mt-1 break-words text-[11px]">
+                  👤 {content.responsible}
+                </div>
+              )}
+
               {/* สถานะ */}
               <select
                 value={content.status}
@@ -164,7 +179,7 @@ export default function Calendar({
                     e.target.value as ContentItem["status"]
                   )
                 }
-                className="mt-2 min-w-0 w-full cursor-pointer truncate rounded border border-white/30 bg-white/20 px-1 py-1 text-[10px] text-white outline-none"
+                className={`mt-2 min-w-0 w-full cursor-pointer truncate rounded border border-white/30 px-1 py-1 text-[10px] text-white outline-none ${statusColors[content.status]}`}
               >
                 <option
                   value="not_cut"
@@ -178,6 +193,13 @@ export default function Calendar({
                   className="text-black"
                 >
                   {statusNames.editing}
+                </option>
+
+                <option
+                  value="waiting"
+                  className="text-black"
+                >
+                  {statusNames.waiting}
                 </option>
 
                 <option

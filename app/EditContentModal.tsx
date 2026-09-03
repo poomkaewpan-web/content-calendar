@@ -21,6 +21,9 @@ export default function EditContentModal({
   const [status, setStatus] =
     useState<ContentItem["status"]>(content.status);
 
+  const [responsible, setResponsible] =
+    useState<ContentItem["responsible"]>(content.responsible || "");
+
   const [shootDate, setShootDate] =
     useState(content.shootDate);
 
@@ -51,6 +54,7 @@ export default function EditContentModal({
       title: title.trim(),
       platform,
       status,
+      responsible,
       shootDate,
       date: publishDate,
       time: publishTime,
@@ -148,6 +152,10 @@ export default function EditContentModal({
                 กำลังตัดต่อ
               </option>
 
+              <option value="waiting">
+                รอออนแอร์
+              </option>
+
               <option value="published">
                 ออนแอร์แล้ว
               </option>
@@ -155,6 +163,27 @@ export default function EditContentModal({
               <option value="cannot_publish">
                 ไม่สามารถออนแอร์ได้
               </option>
+            </select>
+          </div>
+
+          {/* ผู้รับผิดชอบ */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              ผู้รับผิดชอบ
+            </label>
+
+            <select
+              value={responsible}
+              onChange={(e) =>
+                setResponsible(
+                  e.target.value as ContentItem["responsible"]
+                )
+              }
+              className="w-full rounded-lg border border-gray-300 px-3 py-2"
+            >
+              <option value="">เลือกผู้รับผิดชอบ</option>
+              <option value="ภูมิ">ภูมิ</option>
+              <option value="จอม">จอม</option>
             </select>
           </div>
 

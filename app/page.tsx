@@ -13,7 +13,10 @@ type Status =
   | "editing"
   | "published"
   | "not_cut"
+  | "waiting"
   | "cannot_publish";
+
+type Responsible = "ภูมิ" | "จอม" | "";
 
 type ContentItem = {
   id: number;
@@ -21,6 +24,7 @@ type ContentItem = {
   date: string;
   platform: Platform;
   status: Status;
+  responsible: Responsible;
   time: string;
   shootDate: string;
   description: string;
@@ -42,6 +46,7 @@ const platformNames = {
 
 const statusNames = {
   editing: "กำลังตัดต่อ",
+  waiting: "รอออนแอร์",
   published: "ออนแอร์แล้ว",
   not_cut: "ยังไม่ได้ตัด",
   cannot_publish: "ไม่สามารถออนแอร์ได้",
@@ -49,6 +54,7 @@ const statusNames = {
 
 const statusColors = {
   editing: "bg-yellow-100 text-yellow-700",
+  waiting: "bg-orange-100 text-orange-700",
   published: "bg-green-100 text-green-700",
   not_cut: "bg-red-100 text-red-700",
   cannot_publish: "bg-gray-100 text-gray-700",
@@ -98,7 +104,11 @@ export default function Home() {
         title: item.title || "",
         date: item.publish_date || "",
         platform: item.platform || "tiktok",
-        status: item.status || "not_cut",
+        status:
+          item.status === "waiting_publish"
+            ? "waiting"
+            : item.status || "not_cut",
+        responsible: item.responsible || "",
         time: item.publish_time
           ? String(item.publish_time).slice(0, 5)
           : "21:00",
@@ -162,6 +172,9 @@ export default function Home() {
     const status =
       String(form.get("status") || "not_cut") as Status;
 
+    const responsible =
+      String(form.get("responsible") || "") as Responsible;
+
     const shootDate =
       String(form.get("shootDate") || "");
 
@@ -195,6 +208,7 @@ export default function Home() {
           title,
           platform,
           status,
+          responsible,
           shoot_date:
             shootDate || null,
           publish_date: publishDate,
@@ -232,6 +246,7 @@ export default function Home() {
           title,
           platform,
           status,
+          responsible,
           shoot_date:
             shootDate || null,
           publish_date: publishDate,
@@ -270,6 +285,19 @@ export default function Home() {
     id: number,
     status: Status
   ) => {
+    const previousContents = contents;
+
+    setContents((current) =>
+      current.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              status,
+            }
+          : item
+      )
+    );
+
     const { error } = await supabase
       .from("contents")
       .update({
@@ -283,23 +311,14 @@ export default function Home() {
         error
       );
 
+      setContents(previousContents);
+
       alert(
         `เปลี่ยนสถานะไม่สำเร็จ\n\n${error.message}`
       );
 
       return;
     }
-
-    setContents((current) =>
-      current.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              status,
-            }
-          : item
-      )
-    );
   };
 
   // =========================
@@ -703,6 +722,12 @@ export default function Home() {
                             {content.title}
                           </div>
 
+                          {content.responsible && (
+                            <div className="mt-1 break-words text-[11px]">
+                              👤 {content.responsible}
+                            </div>
+                          )}
+
                           {/* Status */}
 
                           <select
@@ -718,7 +743,7 @@ export default function Home() {
                                   .value as Status
                               )
                             }
-                            className="mt-2 min-w-0 w-full cursor-pointer truncate rounded border border-white/30 bg-white/20 px-1 py-1 text-[10px] font-medium text-white outline-none"
+                            className={`mt-2 min-w-0 w-full cursor-pointer truncate rounded border border-white/30 px-1 py-1 text-[10px] font-medium text-white outline-none ${content.status === "waiting" ? "bg-orange-500" : "bg-white/20"}`}
                           >
 
                             <option
@@ -920,12 +945,48 @@ export default function Home() {
                     กำลังตัดต่อ
                   </option>
 
+                  <option value="waiting">
+                    รอออนแอร์
+                  </option>
+
                   <option value="published">
                     ออนแอร์แล้ว
                   </option>
 
                   <option value="cannot_publish">
                     ไม่สามารถออนแอร์ได้
+                  </option>
+
+                </select>
+
+              </div>
+
+              {/* Responsible */}
+
+              <div>
+
+                <label className="mb-1 block text-sm font-medium">
+                  ผู้รับผิดชอบ
+                </label>
+
+                <select
+                  name="responsible"
+                  defaultValue={
+                    editingContent?.responsible || ""
+                  }
+                  className="w-full rounded-lg border px-3 py-2"
+                >
+
+                  <option value="">
+                    เลือกผู้รับผิดชอบ
+                  </option>
+
+                  <option value="ภูมิ">
+                    ภูมิ
+                  </option>
+
+                  <option value="จอม">
+                    จอม
                   </option>
 
                 </select>
